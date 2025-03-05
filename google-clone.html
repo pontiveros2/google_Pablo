@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff;
+        }
+
+        .logo {
+            width: 272px;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-box-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px;
+            width: 500px;
+            background: white;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .search-box-wrapper:hover {
+            box-shadow: 0 1px 8px rgba(32, 33, 36, 0.4);
+        }
+
+        .search-box {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .microphone {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            border: 1px solid #dadce0;
+        }
+    </style>
+    <script>
+        function searchGoogle() {
+            const query = document.querySelector('.search-box').value;
+            if (query) {
+                window.location.href = `https://google.com/search?q=${encodeURIComponent(query)}`;
+            }
+        }
+        function startVoiceRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'es-ES';
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.querySelector('.search-box').value = transcript;
+            };
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchBox = document.querySelector('.search-box');
+            searchBox.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    searchGoogle();
+                }
+            });
+            document.querySelectorAll('.btn').forEach(button => {
+                button.addEventListener("click", searchGoogle);
+            });
+            document.querySelector('.microphone').addEventListener("click", startVoiceRecognition);
+        });
+    </script>
+</head>
+
+<body>
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google"
+        class="logo">
+    <div class="search-container">
+        <div class="search-box-wrapper">
+            <input type="text" class="search-box" placeholder="Buscar en Google">
+            <img src="https://www.gstatic.com/images/icons/material/system/2x/mic_black_24dp.png" alt="Micrófono"
+                class="microphone">
+        </div>
+        <div class="buttons">
+            <button class="btn">Buscar con Google</button>
+            <button class="btn">Voy a tener suerte</button>
+        </div>
+    </div>
+</body>
+
+</html>
